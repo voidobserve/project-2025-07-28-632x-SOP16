@@ -395,6 +395,8 @@ uint16_t WS2812FX_fire_flicker(int rev_intensity) {
  * if(strobe == true) then create a strobe effect
  */
 uint16_t WS2812FX_blink(uint32_t color1, uint32_t color2, uint8_t strobe) {
+  // printf("%s\n", __func__);
+
   if(_seg_rt->counter_mode_call & 1) {
     uint32_t color = (IS_REVERSE) ? color1 : color2; // off
     Adafruit_NeoPixel_fill(color, _seg->start, _seg_len);

@@ -36,4 +36,5 @@ objs/apps/user_app/ws2812-fx-lib/Adafruit_NeoPixel_C/neo_pixel.c.o: \
   C:/JL/pi32/q32s-include\machine/stdlib.h \
   C:/JL/pi32/q32s-include\alloca.h \
   ../../../../apps/user_app/led_strip\led_strip_sys.h \
-  ../../../../apps/user_app/ws2812-fx-lib/Adafruit_NeoPixel_C/neo_pixel.h
+  ../../../../apps/user_app/ws2812-fx-lib/Adafruit_NeoPixel_C/neo_pixel.h \
+  ../../../../include_lib/system/generic\jiffies.h

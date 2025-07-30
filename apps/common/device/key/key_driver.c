@@ -478,7 +478,7 @@ int key_driver_init(void)
 #if 1 // 测试时使用
     extern rf_433_key_struct_t rf_433_key_structure;
     sys_hi_timer_add((void *)&rf_433_key_structure.rf_433_key_para, key_driver_scan, rf_433_key_structure.rf_433_key_para.scan_time); // 注册按键扫描定时器
-    sys_timer_add(NULL, rf_433_key_event_handle, 1);
+    // sys_timer_add(NULL, rf_433_key_event_handle, 1);
 #endif // 测试时使用
 
 #endif // #if RF_433_KEY_ENABLE

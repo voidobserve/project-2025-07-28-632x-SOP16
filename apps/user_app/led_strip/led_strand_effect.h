@@ -170,7 +170,7 @@ typedef struct
   unsigned char star_speed_index;
 
   u8 cur_light_dynamic_mode; // 动态模式下，当前的灯光模式 
-  u8 cur_light_dynamic_speed; // 动态模式速度
+  u8 cur_light_dynamic_speed; // 动态模式速度（0~9 ， 0--快，9--慢）
 
 } fc_effect_t;
 

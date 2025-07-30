@@ -142,18 +142,19 @@ void ws281x_show(unsigned char *pixels_pattern, unsigned short pattern_size)
 
 }
 
-
+#include "jiffies.h"
 
 // 周期10ms
 unsigned long HAL_GetTick(void)
 {
-  return tick_ms;
+  // return tick_ms;
+  return jiffies_msec();
 }
 
 // 每10ms调用一次
 void run_tick_per_10ms(void)
 {
-  tick_ms+=10;
+  // tick_ms+=1;
 }
 
 

@@ -459,6 +459,7 @@ c_SRC_FILES := \
 	../../../../apps/user_app/hardware/hardware.c \
 	../../../../apps/user_app/rf_433_key/rf_433_key.c \
 	../../../../apps/user_app/rf_433_key/rf_433_key_handle_light.c \
+
 	
 
 

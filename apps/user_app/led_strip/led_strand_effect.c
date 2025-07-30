@@ -89,12 +89,12 @@ static void static_mode(void)
         0,                            // 起始位置
         0,                            // 结束位置
         &WS2812FX_mode_static,        // 效果
-        0,                            // 颜色，WS2812FX_setColors设置
+        WHITE,                            // 颜色，WS2812FX_setColors设置
         100,                          // 速度
         0);                           // 选项，这里像素点大小：1
 
     WS2812FX_set_coloQty(0, fc_effect.dream_scene.c_n); // 设置颜色数量  0：第0段   fc_effect.dream_scene.c_n  颜色数量，一个颜色包含（RGB）
-    ls_set_colors(1, &fc_effect.rgb);                   // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
+    // ls_set_colors(0, &fc_effect.rgb);                   // 1:1个颜色    &fc_effect.rgb 这个颜色是什么色
 
     WS2812FX_start();
 }

@@ -31,7 +31,7 @@ void fc_data_init(void)
     fc_effect.rgb.w = 255;
 #endif
     fc_effect.dream_scene.c_n = 1; // 颜色数量为1
-    fc_effect.b = 255; // 本地亮度
+    fc_effect.b = 255;             // 本地亮度
     fc_effect.app_b = 100;
     fc_effect.ls_b = (MAX_BRIGHT_RANK - 1);
     fc_effect.app_speed = 80;
@@ -64,8 +64,8 @@ void fc_data_init(void)
     fc_effect.base_ins.music_mode = 0;
     fc_effect.motor_on_off = DEVICE_ON;
 
-    fc_effect.cur_light_dynamic_mode = 0;  // CUR_LIGHT_MODE_WS2812FX_mode_blink;
-    fc_effect.cur_light_dynamic_speed = 255;
+    fc_effect.cur_light_dynamic_mode = 0; // CUR_LIGHT_MODE_WS2812FX_mode_blink;
+    fc_effect.cur_light_dynamic_speed = 0;
 }
 
 void OpenMortor(void);
@@ -93,12 +93,12 @@ void soft_turn_on_the_light(void) // 软开灯处理
     motor_Init();
     WS2812FX_start();
     open_fan();
-    set_fc_effect(); // 设置灯光模式  
+    set_fc_effect();         // 设置灯光模式
     ls_meteor_stat_effect(); // 开始跑流星灯效果
-    fb_led_on_off_state();  // 与app同步开关状态
-    save_user_data_area3(); // 保存参数配置到flash
+    fb_led_on_off_state();   // 与app同步开关状态
+    save_user_data_area3();  // 保存参数配置到flash
 
-    // printf("soft_turn_on_the_light");
+    printf("soft_turn_on_the_light");
 }
 
 void CloseMotor(void);
@@ -114,7 +114,7 @@ void soft_turn_off_lights(void) // 软关灯处理
     fb_led_on_off_state();  // 与app同步开关状态
     save_user_data_area3(); // 保存参数配置到flash
 
-    // printf("soft_turn_off_lights");
+    printf("soft_turn_off_lights");
 }
 
 /*********************************************************
@@ -188,6 +188,10 @@ void app_set_speed(u8 tp_speed)
  */
 void ls_add_bright(void)
 {
+    if (fc_effect.on_off_flag != DEVICE_ON)
+    {
+        return;
+    }
 
     if (fc_effect.Now_state == IS_STATIC)
     {
@@ -209,6 +213,11 @@ void ls_add_bright(void)
  */
 void ls_sub_bright(void)
 {
+    if (fc_effect.on_off_flag != DEVICE_ON)
+    {
+        return;
+    }
+
     if (fc_effect.Now_state == IS_STATIC)
     {
         if (fc_effect.ls_b > 0)
@@ -226,16 +235,16 @@ void ls_sub_bright(void)
 void ls_set_bright(u8 p_b)
 {
 
-    if (fc_effect.Now_state == IS_STATIC)
-    {
+    // if (fc_effect.Now_state == IS_STATIC)
 
-        fc_effect.ls_b = p_b;
+    fc_effect.Now_state = IS_STATIC;
 
-        fc_effect.app_b = (fc_effect.ls_b + 1) * 10;
-        fc_effect.b = led_b_array[fc_effect.ls_b];
-        fb_bright();
-        WS2812FX_setBrightness(fc_effect.b);
-    }
+    fc_effect.ls_b = p_b;
+
+    fc_effect.app_b = (fc_effect.ls_b + 1) * 10;
+    fc_effect.b = led_b_array[fc_effect.ls_b];
+    fb_bright();
+    WS2812FX_setBrightness(fc_effect.b);
 }
 
 /**
@@ -244,6 +253,11 @@ void ls_set_bright(u8 p_b)
  */
 void ls_set_max_bright(void)
 {
+    if (fc_effect.on_off_flag != DEVICE_ON)
+    {
+        return;
+    }
+
     fc_effect.Now_state = IS_STATIC;
     ls_set_bright(9);
     set_fc_effect();
@@ -947,7 +961,7 @@ _AUTO_T ir_auto_f = IS_PAUSE;
 // 自动模式下，改变模式计数器
 u16 ir_auto_change_tcnt = 0;
 /* 定时器状态 */
-AUTO_TIME_T ir_timer_state;
+// AUTO_TIME_T ir_timer_state;
 /* 定时计数器,累减,单位S */
 u16 ir_time_cnt;
 /* 本地声控模式index */
@@ -1011,20 +1025,20 @@ void ir_mode_sub(void)
 }
 
 /* 设置定时关机，按OFF取消 */
-void set_ir_timer(AUTO_TIME_T timer)
-{
-    /* 检测合法性，和有变化 */
-    if (timer <= IR_TIMER_120MIN && ir_timer_state != timer)
-    {
-        ir_timer_state = timer;
-        ir_time_cnt = timer / IR_TIMER_UNIT;
-    }
-}
+// void set_ir_timer(AUTO_TIME_T timer)
+// {
+//     /* 检测合法性，和有变化 */
+//     if (timer <= IR_TIMER_120MIN && ir_timer_state != timer)
+//     {
+//         ir_timer_state = timer;
+//         ir_time_cnt = timer / IR_TIMER_UNIT;
+//     }
+// }
 
-AUTO_TIME_T get_ir_timer(void)
-{
-    return ir_timer_state;
-}
+// AUTO_TIME_T get_ir_timer(void)
+// {
+//     return ir_timer_state;
+// }
 
 static void ir_auto_change_mode(void)
 {
@@ -1070,7 +1084,7 @@ void full_color_init(void)
 {
 
     WS2812FX_init(fc_effect.led_num, fc_effect.sequence); // 初始化ws2811
-    WS2812FX_setBrightness(fc_effect.b); 
+    WS2812FX_setBrightness(fc_effect.b);
     set_on_off_led(fc_effect.on_off_flag); // 上电后，灯应该为开启状态
 
     extern void count_down_run(void);

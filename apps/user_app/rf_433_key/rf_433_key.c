@@ -12,8 +12,6 @@
 volatile u32 rf_433_data = 0;
 volatile u8 flag_is_received_rf_433_data = 0;
 
-
-
 // 定义按键事件
 enum
 {
@@ -300,9 +298,6 @@ static u8 rf_433_key_get_keyevent(const u8 key_val, const u8 key_event)
     return rf_433_key_event;
 }
 
-
-
-
 // 按键事件处理函数
 void rf_433_key_event_handle(void *p)
 {
@@ -327,24 +322,26 @@ void rf_433_key_event_handle(void *p)
         // =================================================================
     case RF_433_KEY_ID_ON_CLICK:
         // printf("on click \n");
+        automatic_lights_off_disable();
         soft_turn_on_the_light();
         break;
     // case RF_433_KEY_ID_ON_LOOSE:
     //     printf("on loose \n");
     //     break;
-        // =================================================================
-        // OFF                                                           //
-        // =================================================================
+    // =================================================================
+    // OFF                                                           //
+    // =================================================================
     case RF_433_KEY_ID_OFF_CLICK:
         // printf("off click \n");
+        automatic_lights_off_disable();
         soft_turn_off_lights();
         break;
     // case RF_433_KEY_ID_OFF_LOOSE:
     //     printf("off loose \n");
     //     break;
-        // =================================================================
-        // 最大亮度                                                        //
-        // =================================================================
+    // =================================================================
+    // 最大亮度                                                        //
+    // =================================================================
     case RF_433_KEY_ID_LIGHT_CLICK:
         // printf("light click \n");
 
@@ -354,9 +351,9 @@ void rf_433_key_event_handle(void *p)
     // case RF_433_KEY_ID_LIGHT_LOOSE:
     //     printf("light loose \n");
     //     break;
-        // =================================================================
-        // 亮度加                                                          //
-        // =================================================================
+    // =================================================================
+    // 亮度加                                                          //
+    // =================================================================
     case RF_433_KEY_ID_LIGHT_ADD_CLICK:
         // printf("light add click \n");
         ls_add_bright();
@@ -364,9 +361,9 @@ void rf_433_key_event_handle(void *p)
     // case RF_433_KEY_ID_LIGHT_ADD_LOOSE:
     //     printf("light add loose \n");
     //     break;
-        // =================================================================
-        // 亮度减                                                          //
-        // =================================================================
+    // =================================================================
+    // 亮度减                                                          //
+    // =================================================================
     case RF_433_KEY_ID_LIGHT_SUB_CLICK:
         // printf("light sub click \n");
         ls_sub_bright();
@@ -374,31 +371,31 @@ void rf_433_key_event_handle(void *p)
     // case RF_433_KEY_ID_LIGHT_SUB_LOOSE:
     //     printf("light sub loose \n");
     //     break;
-        // =================================================================
-        // 动态效果，速度加                                                 //
-        // =================================================================
+    // =================================================================
+    // 动态效果，速度加                                                 //
+    // =================================================================
     case RF_433_KEY_ID_SPEED_ADD_CLICK:
         // printf("speed add click \n");
-        ls_add_speed();
+        light_dynamic_speed_add();
         break;
-    // case RF_433_KEY_ID_SPEED_ADD_LOOSE:
-    //     printf("speed add loose \n");
-    //     break;
+        // case RF_433_KEY_ID_SPEED_ADD_LOOSE:
+        //     printf("speed add loose \n");
+        //     break;
 
         // =================================================================
         // 动态效果，速度减                                                //
         // =================================================================
     case RF_433_KEY_ID_SPEED_SUB_CLICK:
         // printf("speed sub click \n");
-        ls_sub_speed();
+        light_dynamic_speed_sub();
         break;
 
     // case RF_433_KEY_ID_SPEED_SUB_LOOSE:
     //     printf("speed sub loose \n");
     //     break;
-        // =================================================================
-        // 动态效果，切换-                                                 //
-        // =================================================================
+    // =================================================================
+    // 动态效果，切换-                                                 //
+    // =================================================================
     case RF_433_KEY_ID_MODE_SUB_CLICK:
         // printf("mode sub click \n");
         light_dynamic_mode_switch(0);
@@ -406,171 +403,324 @@ void rf_433_key_event_handle(void *p)
     // case RF_433_KEY_ID_MODE_SUB_LOOSE:
     //     printf("mode sub loose \n");
     //     break;
-        // =================================================================
-        // 动态效果，切换+                                                //
-        // =================================================================
+    // =================================================================
+    // 动态效果，切换+                                                //
+    // =================================================================
     case RF_433_KEY_ID_MODE_ADD_CLICK:
         // printf("mode add click \n");
-        light_dynamic_mode_switch(0);
+        light_dynamic_mode_switch(1);
         break;
-    // case RF_433_KEY_ID_MODE_ADD_LOOSE:
-    //     printf("mode add loose \n");
-    //     break;
+        // case RF_433_KEY_ID_MODE_ADD_LOOSE:
+        //     printf("mode add loose \n");
+        //     break;
 
         // =================================================================
         // 10% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_10_PERCENT_CLICK:
-        printf("10 percent click \n");
+        // printf("10 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
+
         ls_set_bright(0);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_10_PERCENT_LOOSE:
-    //     printf("10 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_10_PERCENT_LOOSE:
+        //     printf("10 percent loose \n");
+        //     break;
 
         // =================================================================
         // 20% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_20_PERCENT_CLICK:
-        printf("20 percent click \n");
+        // printf("20 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(1);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_20_PERCENT_LOOSE:
-    //     printf("20 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_20_PERCENT_LOOSE:
+        //     printf("20 percent loose \n");
+        //     break;
 
         // =================================================================
         // 30% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_30_PERCENT_CLICK:
-        printf("30 percent click \n");
+        // printf("30 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(2);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_30_PERCENT_LOOSE:
-    //     printf("30 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_30_PERCENT_LOOSE:
+        //     printf("30 percent loose \n");
+        //     break;
 
         // =================================================================
         // 40% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_40_PERCENT_CLICK:
-        printf("40 percent click \n");
+        // printf("40 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(3);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_40_PERCENT_LOOSE:
-    //     printf("40 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_40_PERCENT_LOOSE:
+        //     printf("40 percent loose \n");
+        //     break;
 
         // =================================================================
         // 50% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_50_PERCENT_CLICK:
-        printf("50 percent click \n");
+        // printf("50 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(4);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_50_PERCENT_LOOSE:
-    //     printf("50 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_50_PERCENT_LOOSE:
+        //     printf("50 percent loose \n");
+        //     break;
 
         // =================================================================
         // 60% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_60_PERCENT_CLICK:
-        printf("60 percent click \n");
+        // printf("60 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(5);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_60_PERCENT_LOOSE:
-    //     printf("60 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_60_PERCENT_LOOSE:
+        //     printf("60 percent loose \n");
+        //     break;
 
         // =================================================================
         // 70% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_70_PERCENT_CLICK:
-        printf("70 percent click \n");
+        // printf("70 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(6);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_70_PERCENT_LOOSE:
-    //     printf("70 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_70_PERCENT_LOOSE:
+        //     printf("70 percent loose \n");
+        //     break;
 
         // =================================================================
         // 80% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_80_PERCENT_CLICK:
-        printf("80 percent click \n");
+        // printf("80 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(7);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_80_PERCENT_LOOSE:
-    //     printf("80 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_80_PERCENT_LOOSE:
+        //     printf("80 percent loose \n");
+        //     break;
 
         // =================================================================
         // 90% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_90_PERCENT_CLICK:
-        printf("90 percent click \n");
+        // printf("90 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(8);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_90_PERCENT_LOOSE:
-    //     printf("90 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_90_PERCENT_LOOSE:
+        //     printf("90 percent loose \n");
+        //     break;
 
         // =================================================================
         // 100% 亮度                                                      //
         // =================================================================
     case RF_433_KEY_ID_100_PERCENT_CLICK:
-        printf("100 percent click \n");
+        // printf("100 percent click \n");
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
         ls_set_bright(9);
+        set_fc_effect();
         break;
-    // case RF_433_KEY_ID_100_PERCENT_LOOSE:
-    //     printf("100 percent loose \n");
-    //     break;
+        // case RF_433_KEY_ID_100_PERCENT_LOOSE:
+        //     printf("100 percent loose \n");
+        //     break;
 
         // =================================================================
         // 定时关机 5min                                                  //
         // =================================================================
     case RF_433_KEY_ID_5_COUNT_DOWN_CLICK:
-        printf("5 count down click \n");
-        // set_ir_timer
-        set_ir_timer(IR_TIMER_5MIN);
+
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
+        // printf("5 count down click \n");
+
+        if (fc_effect.Now_state == IS_DYNAMIC_EFFECT)
+        {
+            light_dynamic_mode_run();
+        }
+        else
+        {
+            Adafruit_NeoPixel_clear(); // 清空缓存残留
+            WS2812FX_show();
+            WS2812FX_stop();
+            os_time_dly(10); // 确保灯光会闪烁一下
+
+            set_fc_effect();
+        }
+
+        automatic_lights_off_set_times(AUTOMATIC_LIGHTS_OFF_COUNTDOWN_5_MIN);
+        automatic_lights_off_enable();
+
         break;
-    // case RF_433_KEY_ID_5_COUNT_DOWN_LOOSE:
-    //     printf("5 count down loose \n");
-    //     break;
+        // case RF_433_KEY_ID_5_COUNT_DOWN_LOOSE:
+        //     printf("5 count down loose \n");
+        //     break;
 
         // =================================================================
         // 定时关机 10min                                                  //
         // =================================================================
     case RF_433_KEY_ID_10_COUNT_DOWN_CLICK:
-        printf("10 count down click \n");
-        set_ir_timer(IR_TIMER_10MIN);
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
+        // printf("10 count down click \n");
+
+        // set_ir_timer(IR_TIMER_10MIN);
+
+        if (fc_effect.Now_state == IS_DYNAMIC_EFFECT)
+        {
+            light_dynamic_mode_run();
+        }
+        else
+        {
+            Adafruit_NeoPixel_clear(); // 清空缓存残留
+            WS2812FX_show();
+
+            WS2812FX_stop();
+
+            os_time_dly(10);
+            set_fc_effect();
+        }
+
+        automatic_lights_off_set_times(AUTOMATIC_LIGHTS_OFF_COUNTDOWN_10_MIN);
+        automatic_lights_off_enable();
+
         break;
-    // case RF_433_KEY_ID_10_COUNT_DOWN_LOOSE:
-    //     printf("10 count down loose \n");
-    //     break;
+        // case RF_433_KEY_ID_10_COUNT_DOWN_LOOSE:
+        //     printf("10 count down loose \n");
+        //     break;
 
         // =================================================================
         // 定时关机 30min                                                  //
         // =================================================================
     case RF_433_KEY_ID_30_COUNT_DOWN_CLICK:
-        printf("30 count down click \n");
-        set_ir_timer(IR_TIMER_30MIN);
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
+        // printf("30 count down click \n");
+
+        // set_ir_timer(IR_TIMER_30MIN);
+
+        if (fc_effect.Now_state == IS_DYNAMIC_EFFECT)
+        {
+            light_dynamic_mode_run();
+        }
+        else
+        {
+            Adafruit_NeoPixel_clear(); // 清空缓存残留
+            WS2812FX_show();
+
+            WS2812FX_stop();
+
+            os_time_dly(10);
+            set_fc_effect();
+        }
+
+        automatic_lights_off_set_times(AUTOMATIC_LIGHTS_OFF_COUNTDOWN_30_MIN);
+        automatic_lights_off_enable();
+
         break;
-    // case RF_433_KEY_ID_30_COUNT_DOWN_LOOSE:
-    //     printf("30 count down loose \n");
-    //     break;
+        // case RF_433_KEY_ID_30_COUNT_DOWN_LOOSE:
+        //     printf("30 count down loose \n");
+        //     break;
 
         // =================================================================
         // 定时关机 60min                                                  //
         // =================================================================
     case RF_433_KEY_ID_60_COUNT_DOWN_CLICK:
-        printf("60 count down click \n");
-        set_ir_timer(IR_TIMER_60MIN);
+        if (fc_effect.on_off_flag != DEVICE_ON)
+        {
+            return;
+        }
+        // printf("60 count down click \n");
+
+        if (fc_effect.Now_state == IS_DYNAMIC_EFFECT)
+        {
+            light_dynamic_mode_run();
+        }
+        else
+        {
+            Adafruit_NeoPixel_clear(); // 清空缓存残留
+            WS2812FX_show();
+
+            WS2812FX_stop();
+
+            os_time_dly(10);
+            set_fc_effect();
+        }
+
+        // set_ir_timer(IR_TIMER_60MIN);
+        automatic_lights_off_set_times(AUTOMATIC_LIGHTS_OFF_COUNTDOWN_60_MIN);
+        automatic_lights_off_enable();
+
         break;
-    // case RF_433_KEY_ID_60_COUNT_DOWN_LOOSE:
-    //     printf("60 count down loose \n");
-    //     break;
+        // case RF_433_KEY_ID_60_COUNT_DOWN_LOOSE:
+        //     printf("60 count down loose \n");
+        //     break;
     }
 #endif
 }

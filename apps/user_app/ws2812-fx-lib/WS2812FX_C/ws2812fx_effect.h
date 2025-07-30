@@ -72,6 +72,10 @@ uint16_t
   WS2812FX_mode_fade_single(void),
   WS2812FX_smear_adjust_effect(void);
 
+uint16_t WS2812FX_mode_breath_continue(void); // 连续呼吸
+uint16_t WS2812FX_mode_breath_with_pause(void); // 带停顿的呼吸
+uint16_t WS2812FX_mode_fire_flicker_ctl_by_speed(void); // 烛光效果，根据速度值控制
+
 
 uint16_t WS2812FX_mode_fade_each_led(void) ;
 void set_seg_forward_out(uint8_t s, uint16_t ms);

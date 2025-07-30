@@ -526,15 +526,18 @@ void main_while(void)
 
 
     while(1)
-    {
+    {   
+        // printf("%s\n",__func__);
  
         effect_stepmotor();    //声控，电机的音乐效果
         stepmotor();           //无霍尔时，电机停止指令计时
         power_motor_Init();    //电机
         meteor_period_sub();   //流星周期控制
         sound_handle();
+        rf_433_key_event_handle(NULL);
         run_tick_per_10ms();
         WS2812FX_service();
+
 
         #if 0
         if (flag_is_received_rf_433_data)
@@ -568,6 +571,9 @@ void my_main(void)
     full_color_init();
 
     rf_433_key_config();
+
+    extern void automatic_lights_off_handle_by_timer_isr(void * p);
+    sys_hi_timer_add(NULL, automatic_lights_off_handle_by_timer_isr, 1000); // 注册扫描定时器，1s周期
 
     os_sem_create(&LED_TASK_SEM,0);
     task_create(main_while, NULL, "led_task");

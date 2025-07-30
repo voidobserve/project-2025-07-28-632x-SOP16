@@ -102,17 +102,17 @@ typedef enum
     EXTERIOR_MIC, // 外部麦克风
 } MIC_TYPE_T;
 
-typedef enum
-{
-    IR_TIMER_NO = 0, // 无定时
-    IR_TIMER_5MIN = 5 * 1000,
-    // IR_TIMER_5MIN = 5 * 60 * 1000,
-    IR_TIMER_10MIN = 10 * 60 * 1000,
-    IR_TIMER_30MIN = 30 * 60 * 1000,
-    IR_TIMER_60MIN = 60 * 60 * 1000,
-    IR_TIMER_90MIN = 90 * 60 * 1000,
-    IR_TIMER_120MIN = 120 * 60 * 1000,
-} AUTO_TIME_T;
+// typedef enum
+// {
+//     IR_TIMER_NO = 0, // 无定时
+//     IR_TIMER_5MIN = 5 * 1000,
+//     // IR_TIMER_5MIN = 5 * 60 * 1000,
+//     IR_TIMER_10MIN = 10 * 60 * 1000,
+//     IR_TIMER_30MIN = 30 * 60 * 1000,
+//     IR_TIMER_60MIN = 60 * 60 * 1000,
+//     IR_TIMER_90MIN = 90 * 60 * 1000,
+//     IR_TIMER_120MIN = 120 * 60 * 1000,
+// } AUTO_TIME_T;
 
 void power_motor_Init(void);
 
