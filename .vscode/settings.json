@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "mcpwm.h": "c",
+        "btctrler_task.h": "c",
+        "app_power_manage.h": "c",
+        "board_ac632n_demo_cfg.h": "c",
+        "led_strip_sys.h": "c",
+        "app_config.h": "c",
+        "rf433_key.h": "c",
+        "rf_433_key.h": "c",
+        "led_strand_effect.h": "c",
+        "one_wire.h": "c",
+        "includes.h": "c",
+        "ws2812fx.h": "c",
+        "ws2812_bsp.h": "c",
+        "led_strip_voice.h": "c",
+        "led_strip_drive.h": "c",
+        "neo_pixel.h": "c",
+        "WS2812FX.H": "cpp"
+    }
+}
